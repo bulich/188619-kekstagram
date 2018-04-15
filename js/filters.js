@@ -22,8 +22,8 @@ var calculateFilterProcantage = function () {
   filterProcentage = Math.round(100 * pinPosX / scaleLineWidth);
 };
 
-var setEffect = function (effect, filterProcentage) {
-  privewImage.className = ''; //????? mozhno?
+var setEffect = function (effect) {
+  privewImage.className = '';
   privewImage.classList.add('effects__preview--' + effect);
 };
 

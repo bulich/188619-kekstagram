@@ -3,11 +3,8 @@
 var ESC_KEYCODE = 27;
 
 var filtersForm = document.querySelector('.img-upload__overlay');
-var filtersFormInput = document.querySelector('#upload-file'); //глагол в переменной?
+var filtersFormInput = document.querySelector('#upload-file');
 var filtersFormOClose = document.querySelector('#upload-cancel');
-
-
-//структура, обработчики первыми?
 
 var onFiltersFormEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
@@ -22,7 +19,7 @@ var openFiltersForm = function () {
 
 var closeFiltersForm = function () {
   filtersForm.classList.add('hidden');
-  filtersFormInput.value = ''; //???77777777777777
+  filtersFormInput.value = '';
   document.removeEventListener('keydown', onFiltersFormEscPress);
 };
 
