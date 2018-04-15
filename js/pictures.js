@@ -71,10 +71,10 @@ var renderFragment = function (fragment, containerSelector) {
   fragmentContainer.appendChild(fragment);
 };
 
-var renderBigPhoto = function (photosData) {
+var renderBigPhoto = function (photosData, indexOfPhoto) {
   var bigPhotoElement = document.querySelector('.big-picture');
   bigPhotoElement.classList.remove('hidden');
-  var bigPhotoData = photosData[0];
+  var bigPhotoData = photosData[indexOfPhoto];
 
   bigPhotoElement.querySelector('.big-picture__img img').src = bigPhotoData.url;
   bigPhotoElement.querySelector('.likes-count').textContent = bigPhotoData.likes;
@@ -85,7 +85,7 @@ var renderBigPhoto = function (photosData) {
   for (var i = 0; i < bigPhotoData.comments.length; i++) {
     var commentElement = commentTemplate.cloneNode(true);
     commentElement.querySelector('img.social__picture').src = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
-    commentElement.textContent = bigPhotoData.comments[i];
+    commentElement.textContent = bigPhotoData.comments[i]; // textContent стирает аватакри :(
     fragment.appendChild(commentElement);
   }
   renderFragment(fragment, '.social__comments');
@@ -103,5 +103,20 @@ var photosContainer = '.pictures';
 
 
 renderFragment(photosFragment, photosContainer);
-renderBigPhoto(photosData);
-hideControls();
+
+
+var photos = [].slice.call(document.querySelectorAll('.picture__link'));
+
+photos.forEach(function (element, i) {
+  element.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    renderBigPhoto(photosData, i);
+  });
+});
+
+var photoClose = document.querySelector('.big-picture__cancel');
+
+photoClose.addEventListener('click', function () {
+  var bigPhotoElement = document.querySelector('.big-picture');
+  bigPhotoElement.classList.add('hidden');
+});
