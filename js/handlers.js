@@ -1,6 +1,8 @@
 'use strict';
 
 var ESC_KEYCODE = 27;
+var HASTAGS_MAX_QUANTITY = 5;
+var HASHTAG_MAX_LENGTH = 20;
 
 var filtersForm = document.querySelector('.img-upload__overlay');
 var filtersFormInput = document.querySelector('#upload-file');
@@ -45,24 +47,23 @@ var checkForDuplicates = function (array) {
       isDuplicates = true;
     }
   }
-  console.log(isDuplicates);
   return isDuplicates;
 };
 
 var onHashTagInput = function (evt) {
   var inputTarget = evt.target;
   var hashTags = inputTarget.value.split(' ');
-  var is = checkForDuplicates(hashTags);
-  if (hashTags.length > 5) {
-    inputTarget.setCustomValidity('Максимальное количество хэштегов - 5');
-  } if (is) {
+  var hasDuplicates = checkForDuplicates(hashTags);
+  if (hashTags.length > HASTAGS_MAX_QUANTITY) {
+    inputTarget.setCustomValidity('Максимальное количество хэштегов - ' + HASTAGS_MAX_QUANTITY);
+  } if (hasDuplicates) {
     inputTarget.setCustomValidity('Удалите повторяющиеся хэштеги ' + checkForDuplicates(hashTags));
   }
   hashTags.forEach(function (hashTag) {
-    if (hashTag.charAt(0) !== '#') {
-      inputTarget.setCustomValidity('Хештэг должен начинаться с символа #');
-    } else if (hashTag.length > 20) {
-      inputTarget.setCustomValidity('Максимальная длина одного хэштега - 20 символов');
+    if (hashTag.length > HASHTAG_MAX_LENGTH) {
+      inputTarget.setCustomValidity('Максимальная длина одного хэштега - ' + HASHTAG_MAX_LENGTH + ' символов');
+    } else if (/^(#[A-Za-z0-9А-Яа-я]+)$/g.test(hashTag)) {
+      inputTarget.setCustomValidity('Хэштеги должны начинаться с символа #, отделяться друг от друга пробелом и соддержать только цифры и буквы');
     }
   });
 };
