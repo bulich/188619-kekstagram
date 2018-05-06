@@ -5,11 +5,19 @@
   var HASHTAG_MAX_LENGTH = 20;
   var DESCRIPTION_MAX_LENGTH = 140;
 
-  var hashTagsInput = document.querySelector('.text__hashtags');
-  var descriptionInput = document.querySelector('.text__description');
-  var submitButton = document.querySelector('.img-upload__submit');
+  var hashTagsInput = window.form.filtersForm.querySelector('.text__hashtags');
+  var descriptionInput = window.form.filtersForm.querySelector('.text__description');
+  var submitButton = window.form.filtersForm.querySelector('.img-upload__submit');
   var errorForm = document.querySelector('.img-upload__message--error');
   var uploadButton = document.querySelector('.upload-file');
+
+  var validityErrors = {
+    HASHTAGS_QUANTITY: 'Максимальное количество хэштегов- ',
+    DUPLICATES: 'Удалите повторяющиеся хэштеги',
+    SYNTAX: 'Хэштеги должны начинаться с символа #, отделяться друг от друга пробелом и соддержать только цифры и буквы. ' +
+    'Максимальная длина одного хэштега - ' + HASHTAG_MAX_LENGTH + ' символов',
+    DESCRIPTION_LENGTH: 'Максимальное количество символов- ' + DESCRIPTION_MAX_LENGTH
+  };
 
   var hasDuplicates = function (values) {
     values = values.slice(0).sort();
@@ -46,16 +54,15 @@
       var hashTags = hashTagsInput.value.split(' ');
       if (hashTags.length > HASTAGS_MAX_QUANTITY) {
         isHashTagsValid = false;
-        hashTagsInput.setCustomValidity('Максимальное количество хэштегов - ' + HASTAGS_MAX_QUANTITY);
+        hashTagsInput.setCustomValidity(validityErrors.HASHTAGS_QUANTITY + HASTAGS_MAX_QUANTITY);
       } else if (hasDuplicates(hashTags)) {
         isHashTagsValid = false;
-        hashTagsInput.setCustomValidity('Удалите повторяющиеся хэштеги');
+        hashTagsInput.setCustomValidity(validityErrors.DUPLICATES);
       }
       hashTags.forEach(function (hashTag) {
         if ((!(/^(#[A-Za-z0-9А-Яа-я]+)$/g.test(hashTag))) || (hashTag.length > HASHTAG_MAX_LENGTH)) {
           isHashTagsValid = false;
-          hashTagsInput.setCustomValidity('Хэштеги должны начинаться с символа #, отделяться друг от друга пробелом и соддержать только цифры и буквы. ' +
-          'Максимальная длина одного хэштега - ' + HASHTAG_MAX_LENGTH + ' символов');
+          hashTagsInput.setCustomValidity(validityErrors.SYNTAX);
         }
       });
     }
@@ -74,7 +81,7 @@
       var description = descriptionInput.value;
       if (description.length > DESCRIPTION_MAX_LENGTH) {
         isDescriptionValid = false;
-        descriptionInput.setCustomValidity('Максимальное количество символов- ' + DESCRIPTION_MAX_LENGTH);
+        descriptionInput.setCustomValidity(validityErrors.DESCRIPTION_LENGTH);
         descriptionInput.style.borderColor = 'red';
       }
     }

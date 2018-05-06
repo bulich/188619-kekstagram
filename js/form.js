@@ -5,19 +5,20 @@
   var MIN_SCALE_VALUE = 25;
   var MAX_SCALE_VALUE = 100;
   var ENTER_KEYCODE = 13;
+  var FILTER_EFFECT_PREFIX = 'effects__preview--';
 
-  var filterPin = document.querySelector('.scale__pin');
-  var previewImage = document.querySelector('.img-upload__preview img');
-  var effectItems = [].slice.call(document.querySelectorAll('.effects__item'));
-  var scaleLine = document.querySelector('.scale__line');
-  var scaleLevel = document.querySelector('.scale__level');
-  var resizeControls = document.querySelector('.img-upload__resize');
-  var resizeButtons = document.querySelectorAll('.resize__control');
-  var resizeInput = document.querySelector('.resize__control--value');
-  var percentageInput = document.querySelector('.scale__value');
-  var scaleFieldset = document.querySelector('.img-upload__scale');
-  var filtersModal = document.querySelector('.img-upload__overlay');
   var filtersForm = document.querySelector('.img-upload__form');
+  var filterPin = filtersForm.querySelector('.scale__pin');
+  var previewImage = filtersForm.querySelector('.img-upload__preview img');
+  var effectItems = [].slice.call(document.querySelectorAll('.effects__item'));
+  var scaleLine = filtersForm.querySelector('.scale__line');
+  var scaleLevel = filtersForm.querySelector('.scale__level');
+  var resizeControls = filtersForm.querySelector('.img-upload__resize');
+  var resizeButtons = filtersForm.querySelectorAll('.resize__control');
+  var resizeInput = filtersForm.querySelector('.resize__control--value');
+  var percentageInput = filtersForm.querySelector('.scale__value');
+  var scaleFieldset = filtersForm.querySelector('.img-upload__scale');
+  var filtersModal = document.querySelector('.img-upload__overlay');
   var filtersFormInput = document.querySelector('#upload-file');
   var filtersFormClose = document.querySelector('#upload-cancel');
   var resendLinks = document.querySelectorAll('.error__link');
@@ -84,7 +85,7 @@
 
   var setEffect = function (effect) {
     resetFilter();
-    previewImage.classList.add('effects__preview--' + effect);
+    previewImage.classList.add(FILTER_EFFECT_PREFIX + effect);
     if (effect === 'none') {
       scaleFieldset.style.display = 'none';
     } else {

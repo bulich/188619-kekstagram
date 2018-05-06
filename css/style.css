@@ -1010,6 +1010,9 @@ main {
 .social__comment {
   padding-left: 65px;
   padding-bottom: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex
 }
 
 .social__comment-count,
