@@ -28,10 +28,15 @@
 
   var openFiltersForm = function () {
     filtersModal.classList.remove('hidden');
+    resetForm();
+    document.addEventListener('keydown', onFiltersFormEscPress);
+  };
+
+  var resetForm = function () {
     filtersForm.reset();
     resetFilter();
     resetScale();
-    document.addEventListener('keydown', onFiltersFormEscPress);
+    window.validate.resetValidity();
   };
 
   var closeFiltersForm = function () {
@@ -167,6 +172,9 @@
   });
 
   window.form = {
-    onFiltersFormEscPress: onFiltersFormEscPress
+    onFiltersFormEscPress: onFiltersFormEscPress,
+    filtersForm: filtersForm,
+    closeFiltersForm: closeFiltersForm,
+    resetForm: resetForm
   };
 })();
