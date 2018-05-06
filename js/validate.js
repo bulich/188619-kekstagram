@@ -23,7 +23,7 @@
     values = values.slice(0).sort();
     return values.some(function (value, index) {
       if (index) {
-        return values[index] === values[index - 1];
+        return values[index].toLowerCase() === values[index - 1].toLowerCase();
       }
       return false;
     });
@@ -48,53 +48,60 @@
     descriptionInput.style.borderColor = 'white';
   };
 
-  var validateHashTags = function () {
-    var isHashTagsValid = true;
+  var inputsValidity = {
+    hashTagsState: true,
+    descriptionState: true
+  };
+
+  var onHashTagsInput = function () {
+    inputsValidity.hashTagsState = true;
     if (hashTagsInput.value.length !== 0) {
       var hashTags = hashTagsInput.value.split(' ');
       if (hashTags.length > HASTAGS_MAX_QUANTITY) {
-        isHashTagsValid = false;
+        inputsValidity.hashTagsState = false;
         hashTagsInput.setCustomValidity(ValidityErrors.HASHTAGS_QUANTITY + HASTAGS_MAX_QUANTITY);
+        hashTagsInput.reportValidity();
       } else if (hasDuplicates(hashTags)) {
-        isHashTagsValid = false;
+        inputsValidity.hashTagsState = false;
         hashTagsInput.setCustomValidity(ValidityErrors.DUPLICATES);
+        hashTagsInput.reportValidity();
       }
       hashTags.forEach(function (hashTag) {
         if ((!(/^(#[A-Za-z0-9А-Яа-я]+)$/g.test(hashTag))) || (hashTag.length > HASHTAG_MAX_LENGTH)) {
-          isHashTagsValid = false;
+          inputsValidity.hashTagsState = false;
           hashTagsInput.setCustomValidity(ValidityErrors.SYNTAX);
+          hashTagsInput.reportValidity();
         }
       });
     }
-    if (isHashTagsValid) {
+    if (inputsValidity.hashTagsState) {
       hashTagsInput.setCustomValidity('');
       hashTagsInput.style.borderColor = 'white';
     } else {
       hashTagsInput.style.borderColor = 'red';
     }
-    return isHashTagsValid;
   };
 
-  var validateDescription = function () {
-    var isDescriptionValid = true;
+  var onDescriptionInput = function () {
+    inputsValidity.descriptionState = true;
     if (descriptionInput.value.length !== 0) {
       var description = descriptionInput.value;
       if (description.length > DESCRIPTION_MAX_LENGTH) {
-        isDescriptionValid = false;
+        inputsValidity.descriptionState = false;
         descriptionInput.setCustomValidity(ValidityErrors.DESCRIPTION_LENGTH);
+        descriptionInput.reportValidity();
         descriptionInput.style.borderColor = 'red';
       }
     }
-    if (isDescriptionValid) {
+    if (inputsValidity.descriptionState) {
       descriptionInput.setCustomValidity('');
       descriptionInput.style.borderColor = 'white';
     }
-    return isDescriptionValid;
   };
 
   var onFiltersFormSubmit = function (evt) {
     var data = new FormData(window.form.filtersForm);
-    if (!(validateHashTags() && validateDescription())) {
+    if (!(inputsValidity.hashTagsState && inputsValidity.descriptionState)) {
       window.form.filtersForm.checkValidity();
       window.form.filtersForm.reportValidity();
       evt.preventDefault();
@@ -110,19 +117,24 @@
     document.removeEventListener('keydown', window.form.onFiltersFormEscPress);
   });
 
-  descriptionInput.addEventListener('focus', function () {
-    document.removeEventListener('keydown', window.form.onFiltersFormEscPress);
-  });
-
   hashTagsInput.addEventListener('blur', function () {
     document.addEventListener('keydown', window.form.onFiltersFormEscPress);
+  });
+
+  hashTagsInput.addEventListener('input', onHashTagsInput);
+
+  descriptionInput.addEventListener('focus', function () {
+    document.removeEventListener('keydown', window.form.onFiltersFormEscPress);
   });
 
   descriptionInput.addEventListener('blur', function () {
     document.addEventListener('keydown', window.form.onFiltersFormEscPress);
   });
 
+  descriptionInput.addEventListener('input', onDescriptionInput);
+
   window.validate = {
-    resetValidity: resetValidity
+    resetValidity: resetValidity,
+    errorForm: errorForm
   };
 })();

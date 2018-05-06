@@ -5,7 +5,6 @@
 
   var photosData;
   var photoTemplate = document.querySelector('#picture').content;
-  var errorForm = document.querySelector('.img-upload__message--error');
   var photosFilters = document.querySelector('.img-filters');
   var photosFilterButtons = document.querySelectorAll('.img-filters__button');
   var fragmentContainer = document.querySelector('.pictures');
@@ -59,18 +58,18 @@
       fragmentContainer.removeChild(element);
     });
     fragmentContainer.appendChild(fragment);
-    window.preview.setPreview(data);
+    window.preview.setBigPhoto(data);
   };
 
   var errorHandler = function (errorMessage) {
-    errorForm.classList.remove('hidden');
-    errorForm.textContent = errorMessage;
+    window.validate.errorForm.classList.remove('hidden');
+    window.validate.errorForm.textContent = errorMessage;
   };
 
   var successHandler = function (data) {
     photosData = data;
     renderPhotos(data);
-    window.preview.setPreview(data);
+    window.preview.setBigPhoto(data);
     photosFilters.classList.remove('img-filters--inactive');
   };
 

@@ -5,6 +5,8 @@
   var AVATARS_PATH = 'img/avatar-';
   var AVATARS_EXTENSION = '.svg';
 
+  var bigPhotoElement = document.querySelector('.big-picture');
+
   var makeElement = function (tagName, className) {
     var element = document.createElement(tagName);
     element.classList.add(className);
@@ -17,7 +19,7 @@
   };
 
 
-  var setPreview = function (data) {
+  var setBigPhoto = function (data) {
     var photos = [].slice.call(document.querySelectorAll('.picture__link'));
     photos.forEach(function (element, index) {
       element.setAttribute('data-id', index);
@@ -30,7 +32,6 @@
   };
 
   var renderBigPhoto = function (photosData, evt) {
-    var bigPhotoElement = document.querySelector('.big-picture');
     bigPhotoElement.classList.remove('hidden');
     var indexOfPhoto = evt.currentTarget.getAttribute('data-id');
 
@@ -61,9 +62,10 @@
     document.removeEventListener('keydown', onBigPhotoEscPress);
   };
 
-  var bigPhotoElement = document.querySelector('.big-picture');
   var photoClose = bigPhotoElement.querySelector('.big-picture__cancel');
-  photoClose.addEventListener('click', closeBigPhoto);
+  photoClose.addEventListener('click', function () {
+    closeBigPhoto();
+  });
 
   var onBigPhotoEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
@@ -73,7 +75,7 @@
 
   window.preview = {
     makeElement: makeElement,
-    setPreview: setPreview,
+    setBigPhoto: setBigPhoto,
     ESC_KEYCODE: ESC_KEYCODE
   };
 })();

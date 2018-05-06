@@ -84,11 +84,7 @@
   var setEffect = function (effect) {
     resetFilter();
     previewImage.classList.add(FILTER_EFFECT_PREFIX + effect);
-    if (effect === 'none') {
-      scaleFieldset.style.display = 'none';
-    } else {
-      scaleFieldset.style.display = 'block';
-    }
+    scaleFieldset.style.display = (effect === 'none') ? 'none' : 'block';
   };
 
   var onResizeButtonClick = function (evt) {
