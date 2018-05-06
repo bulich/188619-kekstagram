@@ -8,6 +8,8 @@
   var hashTagsInput = document.querySelector('.text__hashtags');
   var descriptionInput = document.querySelector('.text__description');
   var submitButton = document.querySelector('.img-upload__submit');
+  var errorForm = document.querySelector('.img-upload__message--error');
+  var uploadButton = document.querySelector('.upload-file');
 
   var hasDuplicates = function (values) {
     values = values.slice(0).sort();
@@ -17,6 +19,24 @@
       }
       return false;
     });
+  };
+
+  var errorHandler = function (errorMessage) {
+    errorForm.classList.remove('hidden');
+    var errorBlock = window.preview.makeElement('p', 'errorMessage');
+    errorBlock.textContent = errorMessage;
+    errorForm.appendChild(errorBlock);
+  };
+
+  var successHandler = function () {
+    window.form.closeFiltersForm();
+    window.form.resetForm();
+    uploadButton.style.display = 'none';
+  };
+
+  var resetValidity = function () {
+    hashTagsInput.style.borderColor = 'white';
+    descriptionInput.style.borderColor = 'white';
   };
 
   var validateHashTags = function () {
@@ -40,6 +60,9 @@
     }
     if (isHashTagsValid) {
       hashTagsInput.setCustomValidity('');
+      hashTagsInput.style.borderColor = 'white';
+    } else {
+      hashTagsInput.style.borderColor = 'red';
     }
     return isHashTagsValid;
   };
@@ -51,17 +74,26 @@
       if (description.length > DESCRIPTION_MAX_LENGTH) {
         isDescriptionValid = false;
         descriptionInput.setCustomValidity('Максимальное количество символов- ' + DESCRIPTION_MAX_LENGTH);
+        descriptionInput.style.borderColor = 'red';
       }
     }
     if (isDescriptionValid) {
       descriptionInput.setCustomValidity('');
+      descriptionInput.style.borderColor = 'white';
     }
     return isDescriptionValid;
   };
 
-  var onFiltersFormSubmit = function () {
-    validateHashTags();
-    validateDescription();
+  var onFiltersFormSubmit = function (evt) {
+    var data = new FormData(window.form.filtersForm);
+    if (!(validateHashTags() && validateDescription())) {
+      window.form.filtersForm.checkValidity();
+      window.form.filtersForm.reportValidity();
+      evt.preventDefault();
+    } else {
+      evt.preventDefault();
+      window.backend.upload(data, successHandler, errorHandler);
+    }
   };
 
   submitButton.addEventListener('click', onFiltersFormSubmit);
@@ -81,4 +113,8 @@
   descriptionInput.addEventListener('blur', function () {
     document.addEventListener('keydown', window.form.onFiltersFormEscPress);
   });
+
+  window.validate = {
+    resetValidity: resetValidity
+  };
 })();

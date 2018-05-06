@@ -2,16 +2,24 @@
 
 (function () {
   var photoTemplate = document.querySelector('#picture').content;
-  var createPhotoFragment = function (photosData) {
+  var errorForm = document.querySelector('.img-upload__message--error');
+
+  var errorHandler = function (errorMessage) {
+    errorForm.classList.remove('hidden');
+    errorForm.textContent = errorMessage;
+  };
+
+  var successHandler = function (data) {
     var fragment = document.createDocumentFragment();
-    photosData.forEach(function (element, i) {
+    data.forEach(function (element, i) {
       var photoElement = photoTemplate.cloneNode(true);
-      photoElement.querySelector('.picture__img').src = photosData[i].url;
-      photoElement.querySelector('.picture__stat--likes').textContent = photosData[i].likes;
-      photoElement.querySelector('.picture__stat--comments').textContent = photosData[i].comments.length;
+      photoElement.querySelector('.picture__img').src = data[i].url;
+      photoElement.querySelector('.picture__stat--likes').textContent = data[i].likes;
+      photoElement.querySelector('.picture__stat--comments').textContent = data[i].comments.length;
       fragment.appendChild(photoElement);
     });
-    return fragment;
+    renderFragment(fragment, '.pictures');
+    window.preview.setPreview(data);
   };
 
   var renderFragment = function (fragment, containerSelector) {
@@ -19,7 +27,6 @@
     fragmentContainer.appendChild(fragment);
   };
 
-  var photosFragment = createPhotoFragment(window.data.photosData);
-  var photosContainer = '.pictures';
-  renderFragment(photosFragment, photosContainer);
+  window.backend.load(successHandler, errorHandler);
+
 })();
