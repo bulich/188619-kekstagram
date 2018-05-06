@@ -13,7 +13,6 @@
   var effectItems = [].slice.call(document.querySelectorAll('.effects__item'));
   var scaleLine = filtersForm.querySelector('.scale__line');
   var scaleLevel = filtersForm.querySelector('.scale__level');
-  var resizeControls = filtersForm.querySelector('.img-upload__resize');
   var resizeButtons = filtersForm.querySelectorAll('.resize__control');
   var resizeInput = filtersForm.querySelector('.resize__control--value');
   var percentageInput = filtersForm.querySelector('.scale__value');
@@ -69,7 +68,6 @@
   var setScale = function () {
     resizeInput.value = imageSettings.scale + '%';
     previewImage.style.transform = 'scale(' + imageSettings.scale * 0.01 + ')';
-    resizeControls.style.zIndex = 2;
   };
 
   var resetScale = function () {
@@ -91,7 +89,6 @@
     } else {
       scaleFieldset.style.display = 'block';
     }
-    resizeControls.style.zIndex = 2;
   };
 
   var onResizeButtonClick = function (evt) {

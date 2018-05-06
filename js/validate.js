@@ -11,7 +11,7 @@
   var errorForm = document.querySelector('.img-upload__message--error');
   var uploadButton = document.querySelector('.upload-file');
 
-  var validityErrors = {
+  var ValidityErrors = {
     HASHTAGS_QUANTITY: 'Максимальное количество хэштегов- ',
     DUPLICATES: 'Удалите повторяющиеся хэштеги',
     SYNTAX: 'Хэштеги должны начинаться с символа #, отделяться друг от друга пробелом и соддержать только цифры и буквы. ' +
@@ -54,15 +54,15 @@
       var hashTags = hashTagsInput.value.split(' ');
       if (hashTags.length > HASTAGS_MAX_QUANTITY) {
         isHashTagsValid = false;
-        hashTagsInput.setCustomValidity(validityErrors.HASHTAGS_QUANTITY + HASTAGS_MAX_QUANTITY);
+        hashTagsInput.setCustomValidity(ValidityErrors.HASHTAGS_QUANTITY + HASTAGS_MAX_QUANTITY);
       } else if (hasDuplicates(hashTags)) {
         isHashTagsValid = false;
-        hashTagsInput.setCustomValidity(validityErrors.DUPLICATES);
+        hashTagsInput.setCustomValidity(ValidityErrors.DUPLICATES);
       }
       hashTags.forEach(function (hashTag) {
         if ((!(/^(#[A-Za-z0-9А-Яа-я]+)$/g.test(hashTag))) || (hashTag.length > HASHTAG_MAX_LENGTH)) {
           isHashTagsValid = false;
-          hashTagsInput.setCustomValidity(validityErrors.SYNTAX);
+          hashTagsInput.setCustomValidity(ValidityErrors.SYNTAX);
         }
       });
     }
@@ -81,7 +81,7 @@
       var description = descriptionInput.value;
       if (description.length > DESCRIPTION_MAX_LENGTH) {
         isDescriptionValid = false;
-        descriptionInput.setCustomValidity(validityErrors.DESCRIPTION_LENGTH);
+        descriptionInput.setCustomValidity(ValidityErrors.DESCRIPTION_LENGTH);
         descriptionInput.style.borderColor = 'red';
       }
     }
