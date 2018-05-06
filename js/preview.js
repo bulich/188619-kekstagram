@@ -4,7 +4,7 @@
   var ESC_KEYCODE = 27;
   var AVATARS_PATH = 'img/avatar-';
   var AVATARS_EXTENSION = '.svg';
-
+  
   var makeElement = function (tagName, className) {
     var element = document.createElement(tagName);
     element.classList.add(className);
@@ -71,6 +71,7 @@
       closeBigPhoto();
     }
   };
+
   window.preview = {
     makeElement: makeElement,
     setPreview: setPreview,

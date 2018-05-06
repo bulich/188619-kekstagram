@@ -4,6 +4,7 @@
   var SCALE_STEP = 25;
   var MIN_SCALE_VALUE = 25;
   var MAX_SCALE_VALUE = 100;
+  var ENTER_KEYCODE = 13;
 
   var filterPin = document.querySelector('.scale__pin');
   var previewImage = document.querySelector('.img-upload__preview img');
@@ -19,6 +20,8 @@
   var filtersForm = document.querySelector('.img-upload__form');
   var filtersFormInput = document.querySelector('#upload-file');
   var filtersFormClose = document.querySelector('#upload-cancel');
+  var resendLinks = document.querySelectorAll('.error__link');
+
 
   var onFiltersFormEscPress = function (evt) {
     if (evt.keyCode === window.preview.ESC_KEYCODE) {
@@ -169,6 +172,18 @@
 
   filtersFormClose.addEventListener('click', function () {
     closeFiltersForm();
+  });
+
+  resendLinks.forEach(function (element) {
+    element.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
+        openFiltersForm();
+      }
+    });
+    element.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      openFiltersForm();
+    });
   });
 
   window.form = {

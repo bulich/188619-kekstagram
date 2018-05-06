@@ -26,6 +26,7 @@
     var errorBlock = window.preview.makeElement('p', 'errorMessage');
     errorBlock.textContent = errorMessage;
     errorForm.appendChild(errorBlock);
+    window.form.closeFiltersForm();
   };
 
   var successHandler = function () {
